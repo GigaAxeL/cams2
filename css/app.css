@@ -1,0 +1,73 @@
+     .imgContainer {
+         overflow: hidden;
+         height: 0;
+         padding-top: 25px;
+         padding-bottom: 20%;
+     }
+     
+     .workingSign {
+         float: left;
+         width: 16px;
+         height: 16px;
+     }
+     
+     .branchlist {
+         height: 16px;
+         float: left;
+         vertical-align: middle;
+         color: green;
+         font-size: 0.8em;
+     }
+     
+     @media only screen and (max-width: 1500px) {
+         .branchName {
+             color: blue;
+             font-weight: bold;
+             font-size: 1em;
+         }
+         .branchAddress {
+             color: green;
+             font-style: italic;
+             font-size: 1em;
+         }
+     }
+     
+     @media only screen and (max-width: 1900px) {
+         .branchName {
+             color: blue;
+             font-weight: bold;
+             font-size: 2em;
+         }
+         .branchAddress {
+             color: green;
+             font-style: italic;
+             font-size: 2em;
+         }
+     }
+     
+     .branchImg {
+         margin-top: 10px;
+     }
+     
+     .glyphicon-refresh-animate {
+         -animation: spin .7s infinite linear;
+         -webkit-animation: spin2 .7s infinite linear;
+     }
+     
+     @-webkit-keyframes spin2 {
+         from {
+             -webkit-transform: rotate(0deg);
+         }
+         to {
+             -webkit-transform: rotate(360deg);
+         }
+     }
+     
+     @keyframes spin {
+         from {
+             transform: scale(1) rotate(0deg);
+         }
+         to {
+             transform: scale(1) rotate(360deg);
+         }
+     }
