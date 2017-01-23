@@ -6,7 +6,7 @@
     <div class="imgContainer col-md-4" *ngFor="let branch of branches">
       <div class="branchName">{{branch.name}}</div>
       <div class="branchAddress">{{branch.address}}</div>
-      <img class="img-responsive branchImg" src={{branch.imgpath}}><img src="images/noconnect.jpg">
+      <img class="img-responsive branchImg" [src]="branch.imgpath"><img src="images/noconnect.jpg">
       <!--{{branch.imgpath}}<br>-->
    </div>
   </div>
