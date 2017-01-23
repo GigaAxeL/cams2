@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Observable} from "rxjs";
 
-import {Branch} from "./branch.model";
-import {Config} from "./config.model";
 import {BranchesService} from "./app.service";
 
-var config = {"refreshTime": 0};
 
 @Component({
 selector: 'app',
@@ -13,37 +10,42 @@ templateUrl: '/app/app.component.html'
 })
 
 export class AppComponent implements OnInit{
-
-  configs: Config;
-  branches: Branch[];
+  config = {};
+  branches: any;
 
   constructor(public branchesService: BranchesService) {}
 
   getConfigs():any {
-    this.branchesService.getConfigs().then(
-      (configs) => {
-        this.configs = configs;
-        config = configs;
-        console.log("poeben inside promise: " + config.refreshTime);
-        // return config;
-      },
-      (error) => {
-        console.log('ERROR, MOTHERFUCKER, DO YOU SEE IT?')
-      }
-      );
-    console.log("poeben outside promise: " + config.refreshTime);
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '../data/config.json', false);
+    xhr.send();
+    if (xhr.status != 200) {
+      console.log(xhr.status + ': ' + xhr.statusText);
+    } else {
+      // console.log(xhr.responseText);
+      this.config = JSON.parse(xhr.response);
+    }
   }
 
   getBranches() {
-    this.branchesService.getBranches().then(branches => this.branches = branches);
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '../data/branches.json', false);
+    xhr.send();
+    if (xhr.status != 200) {
+      console.log(xhr.status + ': ' + xhr.statusText);
+    } else {
+      // console.log(xhr.responseText);
+      this.branches = JSON.parse(xhr.response);
+    }
   }
 
   ngOnInit(): any {
-      config = this.getConfigs();
-      console.log("PIZDA "+ config)
       this.getBranches();
-      let timer = Observable.interval(15000);
-      timer.subscribe();
+      this.getConfigs();
+      // console.log('--> ngOnInit() fired ' + typeof(this.config) + " = " + this.config.refreshTime);
+
+      // let timer = Observable.interval(15000);
+      // timer.subscribe();
   }
 
 
