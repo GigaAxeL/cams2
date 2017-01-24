@@ -1,0 +1,62 @@
+[
+  {
+    "id": "8m13",
+    "work": 32,
+    "inLine": 70,
+    "averageTime": 17
+  },
+  {
+    "id": "akadem",
+    "work": 8,
+    "inLine": 5,
+    "averageTime": 16
+  },
+  {
+    "id": "rzd",
+    "work": 12,
+    "inLine": 7,
+    "averageTime": 15
+  },
+  {
+    "id": "viz",
+    "work": 10,
+    "inLine": 5,
+    "averageTime": 15
+  },
+  {
+    "id": "gromova",
+    "work": 21,
+    "inLine": 30,
+    "averageTime": 15
+  },
+  {
+    "id": "kl2",
+    "work": 12,
+    "inLine": 10,
+    "averageTime": 15
+  },
+  {
+    "id": "globus",
+    "work": 25,
+    "inLine": 6,
+    "averageTime": 15
+  },
+  {
+    "id": "baumana",
+    "work": 10,
+    "inLine": 4,
+    "averageTime": 15
+  },
+  {
+    "id": "lenin",
+    "work": 10,
+    "inLine": 8,
+    "averageTime": 15
+  },
+  {
+    "id": "stachek",
+    "work": 10,
+    "inLine": 5,
+    "averageTime": 15
+  }
+]

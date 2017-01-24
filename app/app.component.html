@@ -1,12 +1,13 @@
 <div class="container-fluid">
   <div class="row">
     <div class="branchName">Система мониторинга филиалов МФЦ</div>
+    <div></div>
   </div>
   <div class="row">
     <div class="imgContainer col-md-4" *ngFor="let branch of branches">
-      <div class="branchName">{{branch.name}}</div>
+      <div class="branchName">{{branch.name}}</div>{{branch.status}} : {{branch.s}}
       <div class="branchAddress">{{branch.address}}</div>
-      <img class="img-responsive branchImg" [src]="branch.imgpath"><img src="images/noconnect.jpg">
+      <img class="img-responsive branchImg {{branch.css}}" [src]="branch.imgpath"><img src="images/noconnect.jpg">
       <!--{{branch.imgpath}}<br>-->
    </div>
   </div>
