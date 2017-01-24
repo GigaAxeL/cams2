@@ -12,6 +12,9 @@ export class AppComponent implements OnInit{
   config: any;
   branches: any;
   damask: any;
+  greenButton = {active: true, css: "active"};
+  yellowButton = {active: true, css: "active"};
+  redButton = {active: true, css: "active"};
 
   constructor(public branchesService: BranchesService) {}
 
@@ -57,6 +60,7 @@ export class AppComponent implements OnInit{
     // }
   }
 
+  // Поиск позиции
   searchPos(m:any, s: any): number {
     for (var i=0; i < m.length; i++){
       if (m[i].id.toUpperCase() === s.toUpperCase()) {return i}
@@ -86,51 +90,79 @@ export class AppComponent implements OnInit{
     }
   }
 
-  // checkCams() {
-  //   var i;
-  //   for(i = 0; i < this.branches.length; i++) {
-  //     var b = this.branches[i];
-  //     this.isImage(b).then(function (test: any) {
-  //       console.log(test);
-  //     })
-  //   }
-  // }
-  //
-  // isImage(branch: any): Promise<any> {
-  //
-  // var image = new Image();
-  //  image.src = branch.imgpath;
-  //  return new Promise((resolve, reject) => {
-  //    if (image.onload) {
-  //      resolve(console.log("Cam " + branch + " connected..."));
-  //    } else {
-  //      reject(console.log("Cam " + branch + " no connect..."));
-  //    }
-  //  });
+  searchFilter(){
+    for(var i = 0; i < this.branches.length; i++) {
+      if ((this.branches[i].css == "statusGreen") && (this.greenButton.active)) {
+        this.branches[i].active = true;
+      } else if ((this.branches[i].css == "statusYellow") && (this.yellowButton.active)) {
+        this.branches[i].active = true;
+      } else if ((this.branches[i].css == "statusRed") && (this.redButton.active)) {
+        this.branches[i].active = true;
+      } else
+        this.branches[i].active = false;
+    }
+  }
 
-  // image.onerror = function () {
-  //   branch.active = true;
-  //      branch.imgpath = "images/noconnect.jpg";
-  //       checkCams();
-  //   deferred.resolve(false);
-  // };
-  // image.onload = function () {
-  //   branch.active = true;
-  //   branch.updTime = new Date().getTime();
-  //   deferred.resolve(true);
-  //
-  // };
-  // image.src = branch.imgpath;
-  //  console.log("---1--->" + $scope.branches);
-  //
-  // return deferred.promise;
-  // }
+  refreshCams(){
+    for(var i = 0; i < this.branches.length; i++) {
+      var b = this.branches[i];
+      this.isImage(b);
+      // this.noConnect(b);
+    }
+  }
 
+  isImage(branch: any){
+    for(var i = 0; i < this.branches.length; i++) {
+      // if (this.branches[i].connect) {
+        branch.imgpath2 = branch.imgpath + '?decache' + Math.random();
+    //   } else
+    //     branch.connected = true;
+    }
+  }
+
+  noConnect(branch: any){
+    this.branches[this.searchPos(this.branches,branch)].connected = false;
+    this.branches[this.searchPos(this.branches,branch)].imgpath2 = "image/noconnect.jpg";
+  }
+  greenClick(){
+    if (this.greenButton.active){
+      this.greenButton.active = false;
+      this.greenButton.css = "";
+    } else {
+      this.greenButton.active = true;
+      this.greenButton.css = "active";
+    }
+    this.searchFilter();
+  }
+
+  yellowClick(){
+    if (this.yellowButton.active){
+      this.yellowButton.active = false;
+      this.yellowButton.css = "";
+    } else {
+      this.yellowButton.active = true;
+      this.yellowButton.css = "active";
+    }
+    this.searchFilter();
+  }
+
+  redClick(){
+    if (this.redButton.active){
+      this.redButton.active = false;
+      this.redButton.css = "";
+    } else {
+      this.redButton.active = true;
+      this.redButton.css = "active";
+    }
+    this.searchFilter();
+  }
 
   ngOnInit() {
       this.getConfigs();
       this.getBranches();
       this.getDamask(false);
+      this.refreshCams();
+      this.searchFilter();
 
       console.log("viz is " + this.searchPos(this.branches,"VIZ"));
 
@@ -138,6 +170,7 @@ export class AppComponent implements OnInit{
 
       let timer = Observable.timer(0, this.config.refreshTime);
       timer.subscribe(t=> {
+        this.refreshCams();
         if (this.getDamask(false)) {this.updateDamask()};
         console.log(this.branches[0]);
       });

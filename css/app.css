@@ -22,6 +22,10 @@
        border-color: white;
      }
 
+     .greenActive {
+
+     }
+
      .imgContainer {
          overflow: hidden;
          height: 0;
@@ -74,7 +78,8 @@
      }
 
      .branchImg {
-         margin-top: 10px;
+
+       /*margin-top: 10px;*/
      }
 
      .glyphicon-refresh-animate {
