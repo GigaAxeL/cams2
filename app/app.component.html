@@ -2,19 +2,18 @@
   <div class="row">
     <div class="branchName col-md-8">Система мониторинга филиалов МФЦ</div>
     <div class="col-md-4">
-      <button class="btn btn-success {{greenButton.css}}" (click)="greenClick()">ЙА ЗЕЛЕНКА</button>
-      <button class="btn btn-warning {{yellowButton.css}}" (click)="yellowClick()">ЙА ПИВО</button>
-      <button class="btn btn-danger {{redButton.css}}" (click)="redClick()">ЙА УПОРОТ</button>
+      <button class="btn btn-lg btn-success {{button.green.css}}" (click)="greenClick()">ЙА ЗЕЛЕНКА</button>
+      <button class="btn btn-lg btn-warning {{button.yellow.css}}" (click)="yellowClick()">ЙА ПИВО</button>
+      <button class="btn btn-lg btn-danger {{button.red.css}}" (click)="redClick()">ЙА УПОРОТ</button>
     </div>
   </div>
   <div class="row">
     <div class="imgContainer col-md-4" *ngFor="let branch of branches" [hidden]="!branch.active">
       <div>
-        <div class="branchName">{{branch.name}}</div>{{branch.status}} : {{branch.s}}
+        <div class="branchName">{{branch.name}}</div>
         <div class="branchAddress">{{branch.address}}</div>
         <div class="{{branch.css}}">
-          <!--<img class="branchImg" src={{branch.imgpath2}} (onerror)="noConnect(branch)">-->
-          <img class="branchImg" src={{branch.imgpath2}} onerror="this.src='images/noconnect.jpg'">
+        <img class="branchImg img-responsive center-block" src={{branch.imgpath2}} onerror="this.src='images/noconnect.jpg'">
         </div>
       </div>
    </div>

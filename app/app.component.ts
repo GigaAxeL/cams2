@@ -9,15 +9,16 @@ templateUrl: '/app/app.component.html'
 })
 
 export class AppComponent implements OnInit{
-  config: any;
-  branches: any;
-  damask: any;
-  greenButton = {active: true, css: "active"};
-  yellowButton = {active: true, css: "active"};
-  redButton = {active: true, css: "active"};
+  config: any; // Конфигурация системы
+  branches: any; // Массив с данными филиалов
+  damask: any; // Для загрузки данных из Дамаска
+  button = {green:{active: true, css: "active"},
+            yellow:{active: true, css: "active"},
+            red:{active: true, css: "active"}}; // Обьект кнофок фильтрации
 
   constructor(public branchesService: BranchesService) {}
 
+  // Загрузка конфигурации системы
   getConfigs() {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '../data/config.json', false);
@@ -30,6 +31,7 @@ export class AppComponent implements OnInit{
     }
   }
 
+  // Загрузка конфигурации филиалов
   getBranches() {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '../data/branches.json', false);
@@ -42,6 +44,7 @@ export class AppComponent implements OnInit{
     }
   }
 
+  // Загрузка данных из Дамаска
   getDamask(mode: boolean): any {
     var xhr = new XMLHttpRequest();
     this.resetDamask();
@@ -60,13 +63,14 @@ export class AppComponent implements OnInit{
     // }
   }
 
-  // Поиск позиции
-  searchPos(m:any, s: any): number {
+  // Поиск позиции филиала по ID
+  searchPosition(m:any, s: any): number {
     for (var i=0; i < m.length; i++){
       if (m[i].id.toUpperCase() === s.toUpperCase()) {return i}
     }
   }
 
+  // Сбрасывает статусы филиалов
   resetDamask() {
     for (var i=0; i < this.branches.length; i++){
       this.branches[i].inLine = -1;
@@ -75,104 +79,106 @@ export class AppComponent implements OnInit{
     }
   }
 
+  // Обновление данных из Дамаска
   updateDamask(){
     var status = 0;
     var s = 0;
+    this.resetDamask();
     for (var i=0; i < this.branches.length; i++){
-      this.branches[i].work = this.damask[this.searchPos(this.branches, this.branches[i].id)].work;
-      this.branches[i].inLine = this.damask[this.searchPos(this.branches, this.branches[i].id)].inLine;
-      this.branches[i].averageTime = this.damask[this.searchPos(this.branches, this.branches[i].id)].averageTime;
-      s = (this.branches[i].inLine * this.branches[i].averageTime)/this.branches[i].work;
-      if (s < this.config.statusGreen){status = 1; this.branches[i].css = "statusGreen"} else
-        if (s < this.config.statusYellow){status = 2;this.branches[i].css = "statusYellow"} else {status = 3; this.branches[i].css = "statusRed"};
-      this.branches[i].status = status;
-      this.branches[i].s = s;
+      this.branches[i].work = this.damask[this.searchPosition(this.branches, this.branches[i].id)].work;
+      this.branches[i].inLine = this.damask[this.searchPosition(this.branches, this.branches[i].id)].inLine;
+      this.branches[i].averageTime = this.damask[this.searchPosition(this.branches, this.branches[i].id)].averageTime;
+      if (this.branches[i].work > 0) {
+        s = (this.branches[i].inLine * this.branches[i].averageTime) / this.branches[i].work;
+        if (s <= this.config.statusGreen) {
+          status = 1;
+          this.branches[i].css = "statusGreen"
+        } else if (s <= this.config.statusYellow) {
+          status = 2;
+          this.branches[i].css = "statusYellow"
+        } else {
+          status = 3;
+          this.branches[i].css = "statusRed"
+        }
+        ;
+        this.branches[i].status = status;
+        this.branches[i].s = s;
+      } else this.branches[i].status = status;
     }
   }
 
+  // Обработчик фильтрации филиалов
   searchFilter(){
     for(var i = 0; i < this.branches.length; i++) {
-      if ((this.branches[i].css == "statusGreen") && (this.greenButton.active)) {
+      if ((this.branches[i].css == "statusGreen") && (this.button.green.active)) {
         this.branches[i].active = true;
-      } else if ((this.branches[i].css == "statusYellow") && (this.yellowButton.active)) {
+      } else if ((this.branches[i].css == "statusYellow") && (this.button.yellow.active)) {
         this.branches[i].active = true;
-      } else if ((this.branches[i].css == "statusRed") && (this.redButton.active)) {
+      } else if ((this.branches[i].css == "statusRed") && (this.button.red.active)) {
+        this.branches[i].active = true;
+      } else if (this.branches[i].css == "statusNo") {
         this.branches[i].active = true;
       } else
         this.branches[i].active = false;
     }
   }
 
+  // Обновление снапшотов (подмена кеша изображений)
   refreshCams(){
     for(var i = 0; i < this.branches.length; i++) {
-      var b = this.branches[i];
-      this.isImage(b);
-      // this.noConnect(b);
+      this.branches[i].imgpath2 = this.branches[i].imgpath + '?decache' + Math.random();
     }
   }
 
-  isImage(branch: any){
-    for(var i = 0; i < this.branches.length; i++) {
-      // if (this.branches[i].connect) {
-        branch.imgpath2 = branch.imgpath + '?decache' + Math.random();
-    //   } else
-    //     branch.connected = true;
-    }
-  }
-
-  noConnect(branch: any){
-    this.branches[this.searchPos(this.branches,branch)].connected = false;
-    this.branches[this.searchPos(this.branches,branch)].imgpath2 = "image/noconnect.jpg";
-  }
+  // Обработчик клика ЗЕЛЕНОГО фильтра
   greenClick(){
-    if (this.greenButton.active){
-      this.greenButton.active = false;
-      this.greenButton.css = "";
+    if (this.button.green.active){
+      this.button.green.active = false;
+      this.button.green.css = "";
     } else {
-      this.greenButton.active = true;
-      this.greenButton.css = "active";
+      this.button.green.active = true;
+      this.button.green.css = "active";
     }
     this.searchFilter();
   }
 
+  // Обработчик клика ЖЕЛТОГО фильтра
   yellowClick(){
-    if (this.yellowButton.active){
-      this.yellowButton.active = false;
-      this.yellowButton.css = "";
+    if (this.button.yellow.active){
+      this.button.yellow.active = false;
+      this.button.yellow.css = "";
     } else {
-      this.yellowButton.active = true;
-      this.yellowButton.css = "active";
+      this.button.yellow.active = true;
+      this.button.yellow.css = "active";
     }
     this.searchFilter();
   }
 
+  // Обработчик клика КРАСНОГО фильтра
   redClick(){
-    if (this.redButton.active){
-      this.redButton.active = false;
-      this.redButton.css = "";
+    if (this.button.red.active){
+      this.button.red.active = false;
+      this.button.red.css = "";
     } else {
-      this.redButton.active = true;
-      this.redButton.css = "active";
+      this.button.red.active = true;
+      this.button.red.css = "active";
     }
     this.searchFilter();
   }
 
+  // Инициализация системы
   ngOnInit() {
       this.getConfigs();
       this.getBranches();
       this.getDamask(false);
-      this.refreshCams();
       this.searchFilter();
-
-      console.log("viz is " + this.searchPos(this.branches,"VIZ"));
-
-      // console.log('--> ngOnInit() fired ' + typeof(this.config) + " = " + this.config.damaskUrl);
+      this.refreshCams();
 
       let timer = Observable.timer(0, this.config.refreshTime);
       timer.subscribe(t=> {
         this.refreshCams();
         if (this.getDamask(false)) {this.updateDamask()};
-        console.log(this.branches[0]);
+        console.log(this.branches[3]);
       });
   }
 
