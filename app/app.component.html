@@ -2,9 +2,9 @@
   <div class="row">
     <div class="branchName col-md-8">Система мониторинга филиалов МФЦ</div>
     <div class="col-md-4">
-      <button class="btn btn-lg btn-success {{button.green.css}}" (click)="greenClick()">ЙА ЗЕЛЕНКА</button>
-      <button class="btn btn-lg btn-warning {{button.yellow.css}}" (click)="yellowClick()">ЙА ПИВО</button>
-      <button class="btn btn-lg btn-danger {{button.red.css}}" (click)="redClick()">ЙА УПОРОТ</button>
+      <button class="btn btn-lg btn-success {{button.green.css}}" (click)="greenClick()">СВОБОДНЫЕ</button>
+      <button class="btn btn-lg btn-warning {{button.yellow.css}}" (click)="yellowClick()">СРЕДНИЕ</button>
+      <button class="btn btn-lg btn-danger {{button.red.css}}" (click)="redClick()">ЗАГРУЖЕННЫЕ</button>
     </div>
   </div>
   <div class="row">
@@ -12,8 +12,8 @@
       <div>
         <div class="branchName">{{branch.name}}</div>
         <div class="branchAddress">{{branch.address}}</div>
-        <div class="{{branch.css}}">
-        <img class="branchImg img-responsive center-block" src={{branch.imgpath2}} onerror="this.src='images/noconnect.png'">
+        <div class="branchImg {{branch.css}}">
+        <img class="center-block" src={{branch.imgpath2}} onerror="this.src='images/noconnect.png'">
         </div>
       </div>
    </div>
