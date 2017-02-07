@@ -20,7 +20,7 @@ export class AppComponent implements OnInit{
 
   // Загрузка конфигурации системы
   getConfigs() {
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
     xhr.open('GET', '../data/config.json', false);
     xhr.send();
     if (xhr.status != 200) {
@@ -33,7 +33,7 @@ export class AppComponent implements OnInit{
 
   // Загрузка конфигурации филиалов
   getBranches() {
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
     xhr.open('GET', '../data/branches.json', false);
     xhr.send();
     if (xhr.status != 200) {
@@ -46,7 +46,7 @@ export class AppComponent implements OnInit{
 
   // Загрузка данных из Дамаска
   getDamask(mode: boolean): any {
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
     this.resetDamask();
     xhr.open('GET', this.config.damaskUrl, mode);
     xhr.send();
@@ -65,14 +65,14 @@ export class AppComponent implements OnInit{
 
   // Поиск позиции филиала по ID
   searchPosition(m:any, s: any): number {
-    for (var i=0; i < m.length; i++){
+    for (let i=0; i < m.length; i++){
       if (m[i].id.toUpperCase() === s.toUpperCase()) {return i}
     }
   }
 
   // Сбрасывает статусы филиалов
   resetDamask() {
-    for (var i=0; i < this.branches.length; i++){
+    for (let i=0; i < this.branches.length; i++){
       this.branches[i].inLine = -1;
       this.branches[i].status = 0;
       this.branches[i].css = "statusNo"
@@ -81,10 +81,10 @@ export class AppComponent implements OnInit{
 
   // Обновление данных из Дамаска
   updateDamask(){
-    var status = 0;
-    var s = 0;
+    let status = 0;
+    let s = 0;
     this.resetDamask();
-    for (var i=0; i < this.branches.length; i++){
+    for (let i=0; i < this.branches.length; i++){
       this.branches[i].work = this.damask[this.searchPosition(this.branches, this.branches[i].id)].work;
       this.branches[i].inLine = this.damask[this.searchPosition(this.branches, this.branches[i].id)].inLine;
       this.branches[i].averageTime = this.damask[this.searchPosition(this.branches, this.branches[i].id)].averageTime;
@@ -109,7 +109,7 @@ export class AppComponent implements OnInit{
 
   // Обработчик фильтрации филиалов
   searchFilter(){
-    for(var i = 0; i < this.branches.length; i++) {
+    for(let i = 0; i < this.branches.length; i++) {
       if ((this.branches[i].css == "statusGreen") && (this.button.green.active)) {
         this.branches[i].active = true;
       } else if ((this.branches[i].css == "statusYellow") && (this.button.yellow.active)) {
@@ -125,7 +125,7 @@ export class AppComponent implements OnInit{
 
   // Обновление снапшотов (подмена кеша изображений)
   refreshCams(){
-    for(var i = 0; i < this.branches.length; i++) {
+    for(let i = 0; i < this.branches.length; i++) {
       this.branches[i].imgpath2 = this.branches[i].imgpath + '?decache' + Math.random();
     }
   }
@@ -170,14 +170,16 @@ export class AppComponent implements OnInit{
   ngOnInit() {
       this.getConfigs();
       this.getBranches();
-      this.getDamask(false);
-      this.searchFilter();
-      this.refreshCams();
+      // this.getDamask(false);
+      // this.searchFilter();
+      // this.refreshCams();
 
-      let timer = Observable.timer(0, this.config.refreshTime);
+      let timer = Observable.timer(0, this.config.refreshTime); //Создание таймера
       timer.subscribe(t=> {
-        this.refreshCams();
+
         if (this.getDamask(false)) {this.updateDamask()};
+        this.searchFilter();
+        this.refreshCams();
         console.log(this.branches[3]);
       });
   }

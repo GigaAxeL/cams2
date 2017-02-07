@@ -2,6 +2,5 @@
   "refreshTime": 15000,
   "damaskUrl": "../data/damask.json",
   "statusGreen": 10,
-  "statusYellow": 20,
-  "statusRed": 30
+  "statusYellow": 20
 }
