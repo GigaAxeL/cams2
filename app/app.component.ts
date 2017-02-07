@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {Observable} from "rxjs";
-import {BranchesService} from "./app.service";
 import any = jasmine.any;
 
 @Component({
@@ -16,7 +15,7 @@ export class AppComponent implements OnInit{
             yellow:{active: true, css: "active"},
             red:{active: true, css: "active"}}; // Обьект кнофок фильтрации
 
-  constructor(public branchesService: BranchesService) {}
+  constructor() {}
 
   // Загрузка конфигурации системы
   getConfigs() {
