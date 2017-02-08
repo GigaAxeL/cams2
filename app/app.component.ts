@@ -131,36 +131,33 @@ export class AppComponent implements OnInit{
 
   // Обработчик клика ЗЕЛЕНОГО фильтра
   greenClick(){
-    if (this.button.green.active){
-      this.button.green.active = false;
-      this.button.green.css = "";
+    this.button.green.active = !this.button.green.active;
+    if (this.button.green.css = ""){
+      this.button.green.css = "active"
     } else {
-      this.button.green.active = true;
-      this.button.green.css = "active";
+      this.button.green.css = "";
     }
     this.searchFilter();
   }
 
   // Обработчик клика ЖЕЛТОГО фильтра
   yellowClick(){
-    if (this.button.yellow.active){
-      this.button.yellow.active = false;
-      this.button.yellow.css = "";
+    this.button.yellow.active = !this.button.yellow.active;
+    if (this.button.yellow.css = ""){
+      this.button.yellow.css = "active"
     } else {
-      this.button.yellow.active = true;
-      this.button.yellow.css = "active";
+      this.button.yellow.css = "";
     }
     this.searchFilter();
   }
 
   // Обработчик клика КРАСНОГО фильтра
   redClick(){
-    if (this.button.red.active){
-      this.button.red.active = false;
-      this.button.red.css = "";
+    this.button.red.active = !this.button.red.active;
+    if (this.button.red.css = ""){
+      this.button.red.css = "active"
     } else {
-      this.button.red.active = true;
-      this.button.red.css = "active";
+      this.button.red.css = "";
     }
     this.searchFilter();
   }
